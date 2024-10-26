@@ -60,14 +60,44 @@
       <!---Main content not shown by default-->
       <section id="app" class="hidden">
         <div class="container">
-          <h2 class="mb-2 font-bold text-xl">
-            Performance tracker: <span id="username"></span>
-          </h2>
-        </div>
-        <canvas id="myChart"></canvas>
+          <!--Header-->
+          <div class="mb-10">
+            <h2 class="mb-2 font-bold text-2xl">
+              Performance tracker: <span id="username"></span>
+            </h2>
+            <h3 class="text-slate-400 font-light text-lg leading-normal">
+              Analysing: last 30 games
+            </h3>
+          </div>
+
+          <!-- Stat one-->
+          <div class="stat mb-10">
+            <h2 class="mb-2 font-bold text-xl">Performance by day:</h2>
+
+            <canvas id="myChart" class="mb-5"></canvas>
+            <div
+              class="bg-gray-800 p-5 rounded-lg border-l-4 border-green-500 mb-2"
+            >
+              You perform best on <strong>Mondays</strong> with a
+              <span class="text-green-500 font-bold">55%</span> win rate
+            </div>
+            <div
+              class="bg-gray-800 p-5 rounded-lg border-l-4 border-red-500 mb-2"
+            >
+              You perform worst on <strong>Fridays</strong> with a
+              <span class="text-red-500 font-bold">35%</span> win rate
+            </div>
+          </div>
+
+          <!-- Stat two-->
+           <div class="stat mb-10">
+            <h2 class="mb-2 font-bold text-xl">Performance by hour:</h2>
+           </div>
+        
+      <div>
       </section>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="./dist/index.js"></script>
+    <script type="module" src="./dist/index.js"></script>
   </body>
 </html>
