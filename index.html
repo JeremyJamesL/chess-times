@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Manrope%3Awght%40400%3B500%3B700%3B800&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"
+    />
+    <link rel="stylesheet" href="/dist/style.css" />
+
+    <!--
+      /* Stone 900 -> background */
+      /* zinc-50 -> heading text */
+      /* zinc-400 -> body text */
+      /* zinc-800 -> secondary bg*/
+      /* neutral-700 -> border */
+      /* violet-400 -> highlight */
+      /* Stolen from: https://www.usegalileo.ai/explore */ 
+      -->
+  </head>
+  <body
+    class="bg-neutral-900 text-white font-body"
+    style="font-family: Manrope, 'Noto Sans', sans-serif"
+  >
+    <header>
+      <div class="container py-5">
+        <div class="flex items-center justify-center">
+          <h1 class="font-bold text-xl">
+            <span class="text-2xl mr-2">♞</span>Chess Insights
+          </h1>
+        </div>
+      </div>
+    </header>
+
+    <main class="py-5">
+      <section class="mb-7">
+        <div class="container">
+          <form action="" id="form">
+            <input
+              type="text"
+              id="forminput"
+              placeholder="Enter your chess.com username"
+              class="w-full mb-5 bg-gray-800 placeholder:text-slate-400 placeholder:font-light p-3 rounded-lg"
+            />
+            <button
+              type="submit"
+              class="bg-blue-500 font-bold w-full rounded-lg p-3"
+            >
+              Submit
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!---Main content not shown by default-->
+      <section id="app" class="hidden">
+        <div class="container">
+          <h2 class="mb-2 font-bold text-xl">
+            Performance tracker: <span id="username"></span>
+          </h2>
+        </div>
+        <canvas id="myChart"></canvas>
+      </section>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="./dist/index.js"></script>
+  </body>
+</html>
