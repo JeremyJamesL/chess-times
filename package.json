@@ -6,9 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "serve": "lite-server",
-    "build:ts": "tsc --watch",
     "build:css": "tailwindcss -i ./src/style.css -o ./dist/style.css --watch",
-    "start": "npm-run-all -p serve build:ts build:css"
+    "start": "npm-run-all -p serve build:css"
   },
   "keywords": [],
   "author": "",

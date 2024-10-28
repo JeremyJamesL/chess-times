@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: ["./index.html", "./src/index.ts"],
+const config = {
+  content: ["./index.html", "./src/index.js"],
   theme: {
     fontFamily: {
       body: ["Lato"],
@@ -9,3 +9,5 @@ module.exports = {
   },
   plugins: [],
 };
+
+export default config;
