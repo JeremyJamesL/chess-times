@@ -20,7 +20,7 @@ export function createChart(
   const xData = formatDataForChart(data, true);
   const yData = formatDataForChart(data, false);
 
-  new Chart(document.querySelector(querySelection), {
+  return new Chart(document.querySelector(querySelection), {
     type: "bar",
     data: {
       labels: Object.keys(data),

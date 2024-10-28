@@ -24,6 +24,8 @@ const lowPerfHour = document.getElementById("lowPerfHour");
 const lowPerfHourScore = document.getElementById("lowPerfHourScore");
 
 let totalGames = 0;
+let dayChart;
+let hourChart;
 let baseURL = `https://api.chess.com/pub/player`;
 let playerName = "";
 const dayNames = [
@@ -114,6 +116,13 @@ const getArchives = async () => {
 const handleFormSubmit = async (e) => {
   e.preventDefault();
 
+  if (dayChart) {
+    dayChart.destroy();
+  }
+  if (hourChart) {
+    hourChart.destroy();
+  }
+
   spinner.classList.remove("hidden");
   spinner.classList.add("flex");
 
@@ -126,10 +135,10 @@ const handleFormSubmit = async (e) => {
   const perfPerDay = getPerfPerDay(allGames);
   const perfPerHour = getPerfPerHour(allGames);
 
-  const [highestPerfDay, lowestPerfDay] = getHeadlinePerf(perfPerDay);
-  const [highestPerfHour, lowestPerfHour] = getHeadlinePerf(perfPerHour);
+  const [lowestPerfDay, highestPerfDay] = getHeadlinePerf(perfPerDay);
+  const [lowestPerfHour, highestPerfHour] = getHeadlinePerf(perfPerHour);
 
-  createChart(
+  dayChart = createChart(
     "#dayChart",
     "% of wins",
     "% of losses",
@@ -138,7 +147,7 @@ const handleFormSubmit = async (e) => {
     perfPerDay
   );
 
-  createChart(
+  hourChart = createChart(
     "#hourChart",
     "% of wins",
     "% of losses",
@@ -151,15 +160,15 @@ const handleFormSubmit = async (e) => {
   usernameText.textContent = playerName;
   gameCount.textContent = totalGames.toLocaleString("en-GB");
 
-  highPerfDay.textContent = highestPerfDay.name;
-  highPerfDayScore.textContent = highestPerfDay.val + "%";
-  lowPerfDay.textContent = lowestPerfDay.name;
-  lowPerfDayScore.textContent = lowestPerfDay.val + "%";
+  highPerfDay.textContent = highestPerfDay[0];
+  highPerfDayScore.textContent = highestPerfDay[1].winPercentage + "%";
+  lowPerfDay.textContent = lowestPerfDay[0];
+  lowPerfDayScore.textContent = lowestPerfDay[1].winPercentage + "%";
 
-  highPerfHour.textContent = highestPerfHour.name;
-  highPerfHourScore.textContent = highestPerfHour.val + "%";
-  lowPerfHour.textContent = lowestPerfHour.name;
-  lowPerfHourScore.textContent = lowestPerfHour.val + "%";
+  highPerfHour.textContent = highestPerfHour[0];
+  highPerfHourScore.textContent = highestPerfHour[1].winPercentage + "%";
+  lowPerfHour.textContent = lowestPerfHour[0];
+  lowPerfHourScore.textContent = lowestPerfHour[1].winPercentage + "%";
 
   // Only show app when the above has completed and we have data to show
   app.classList.remove("hidden");

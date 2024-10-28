@@ -58,32 +58,25 @@ const getPerfPerHour = (games) => {
 };
 
 const getHeadlinePerf = (data) => {
-  // Data either represents daily or hourly perf
-  let highest = {
-    name: "",
-    val: 0,
-  };
+  const lowest = Object.entries(data).reduce(
+    (min, [day, stats]) => {
+      return parseFloat(stats.winPercentage) < parseFloat(min[1].winPercentage)
+        ? [day, stats]
+        : min;
+    },
+    ["", { winPercentage: "100" }]
+  );
 
-  let lowest = {
-    name: "",
-    val: 100,
-  };
+  const highest = Object.entries(data).reduce(
+    (max, [day, stats]) => {
+      return parseFloat(stats.winPercentage) > parseFloat(max[1].winPercentage)
+        ? [day, stats]
+        : max;
+    },
+    ["", { winPercentage: "0" }]
+  );
 
-  for (const key in data) {
-    if (data[key]["winPercentage"] > highest.val) {
-      highest.val = data[key]["winPercentage"];
-      highest.name = key;
-    } else break;
-  }
-
-  for (const key in data) {
-    if (data[key]["winPercentage"] < lowest.val) {
-      lowest.val = data[key]["winPercentage"];
-      lowest.name = key;
-    } else break;
-  }
-
-  return [highest, lowest];
+  return [lowest, highest];
 };
 
 export { getPerfPerDay, getPerfPerHour, getHeadlinePerf };
