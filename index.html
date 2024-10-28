@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Don't play then</title>
+    <meta name="description" content="Learn when you play your best (and worst), chess">
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
     <link
       rel="stylesheet"
@@ -11,17 +12,8 @@
       onload="this.rel='stylesheet'"
       href="https://fonts.googleapis.com/css2?display=swap&amp;family=Manrope%3Awght%40400%3B500%3B700%3B800&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"
     />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>♞</text></svg>">
     <link rel="stylesheet" href="/dist/style.css" />
-
-    <!--
-      /* Stone 900 -> background */
-      /* zinc-50 -> heading text */
-      /* zinc-400 -> body text */
-      /* zinc-800 -> secondary bg*/
-      /* neutral-700 -> border */
-      /* violet-400 -> highlight */
-      /* Stolen from: https://www.usegalileo.ai/explore */ 
-      -->
   </head>
   <body
     class="bg-neutral-900 text-white font-body"
@@ -31,7 +23,7 @@
       <div class="container py-5">
         <div class="flex items-center justify-center">
           <h1 class="font-bold text-xl">
-            <span class="text-2xl mr-2">♞</span>Chess Insights
+            <span class="text-2xl mr-2">♞</span>Don't play then...
           </h1>
         </div>
       </div>
@@ -56,6 +48,10 @@
           </form>
         </div>
       </section>
+
+      <section class="hidden justify-center" id="spinner">
+        <span class="loader"></span>
+      </section>  
 
       <!---Main content not shown by default-->
       <section id="app" class="hidden">
@@ -97,16 +93,15 @@
             <div
             class="bg-gray-800 p-5 rounded-lg border-l-4 border-green-500 mb-2"
           >
-            You perform best on <strong id="highPerfHour">MonHours</strong> with a
+            You perform best at <strong id="highPerfHour"></strong> with a
             <span class="text-green-500 font-bold" id="highPerfHourScore"></span> win rate
           </div>
           <div
             class="bg-gray-800 p-5 rounded-lg border-l-4 border-red-500 mb-2"
           >
-            You perform worst on <strong id="lowPerfHour">FriHours</strong> with a
+            You perform worst at <strong id="lowPerfHour"></strong> with a
             <span class="text-red-500 font-bold" id="lowPerfHourScore"></span> win rate
           </div>
-        
       <div>
       </section>
     </main>

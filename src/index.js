@@ -9,6 +9,7 @@ const form = document.querySelector("#form");
 const formInput = document.querySelector("#forminput");
 const usernameText = document.querySelector("#username");
 const gameCount = document.querySelector("#gameCount");
+const spinner = document.querySelector("#spinner");
 
 // Day perf selectors
 const highPerfDay = document.getElementById("highPerfDay");
@@ -24,7 +25,7 @@ const lowPerfHourScore = document.getElementById("lowPerfHourScore");
 
 let totalGames = 0;
 let baseURL = `https://api.chess.com/pub/player`;
-let playerName = "dippyville";
+let playerName = "";
 const dayNames = [
   "Sunday",
   "Monday",
@@ -37,7 +38,7 @@ const dayNames = [
 
 // Functions
 const checkUserExists = async () => {
-  const userExistsRes = await fetch(`${baseURL}/${formInput.value}`);
+  const userExistsRes = await fetch(`${baseURL}/${playerName}`);
   const userExistsData = await userExistsRes.json();
 
   if (userExistsData.code === 0) {
@@ -71,16 +72,17 @@ const getAllGames = async (endpoints) => {
   const results = await Promise.all(fetchPromises);
 
   // Process the games into GameData interface
+
   const allGameData = results.map((game) => {
     return game.games.map((subGame) => {
       const date = new Date(subGame.end_time * 1000);
       const day = dayNames[date.getUTCDay()];
       const hourOfDay = date.getHours();
       const win =
-        subGame.black.playerName === playerName &&
+        subGame.black.username.toLowerCase() === playerName.toLowerCase() &&
         subGame.black.result === "win"
           ? true
-          : subGame.white.playerName === playerName &&
+          : subGame.white.username.toLowerCase() === playerName.toLowerCase() &&
             subGame.white.result === "win"
           ? true
           : false;
@@ -102,7 +104,6 @@ const getAllGames = async (endpoints) => {
 };
 
 const getArchives = async () => {
-  console.log(playerName, "in archives");
   const archiveResponse = await fetch(
     `https://api.chess.com/pub/player/${playerName}/games/archives`
   );
@@ -113,13 +114,17 @@ const getArchives = async () => {
 const handleFormSubmit = async (e) => {
   e.preventDefault();
 
+  spinner.classList.remove("hidden");
+  spinner.classList.add("flex");
+
+  playerName = formInput.value;
+
   checkUserExists();
   const gamesArchives = await getArchives();
   const allGames = await getAllGames(gamesArchives);
 
   const perfPerDay = getPerfPerDay(allGames);
   const perfPerHour = getPerfPerHour(allGames);
-  console.log(perfPerDay, perfPerHour);
 
   const [highestPerfDay, lowestPerfDay] = getHeadlinePerf(perfPerDay);
   const [highestPerfHour, lowestPerfHour] = getHeadlinePerf(perfPerHour);
@@ -158,6 +163,9 @@ const handleFormSubmit = async (e) => {
 
   // Only show app when the above has completed and we have data to show
   app.classList.remove("hidden");
+
+  spinner.classList.remove("flex");
+  spinner.classList.add("hidden");
 };
 
 form.addEventListener("submit", handleFormSubmit);

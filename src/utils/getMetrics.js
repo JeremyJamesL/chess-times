@@ -27,7 +27,7 @@ const getPerfPerDay = (games) => {
 
 const getPerfPerHour = (games) => {
   const hourlyPerf = {};
-  let i = 1;
+  let i = 0;
   while (i <= 24) {
     hourlyPerf[i] = {
       wins: 0,
