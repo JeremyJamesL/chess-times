@@ -1,89 +1,46 @@
-const ctx = document.getElementById("myChart");
-import { calculatePercentage } from "../helpers/calculatePerc.js";
+const formatDataForChart = (chartData, isWin) => {
+  const dataArr = [];
+  const labelsArr = [];
+  for (const key in chartData) {
+    labelsArr.push(key);
+    if (isWin) dataArr.push(chartData[key]["winPercentage"]);
+    else dataArr.push((100 - chartData[key]["winPercentage"]).toString());
+  }
+  return dataArr;
+};
 
-export function createChart(dailyRatio) {
-  console.log(dailyRatio);
-  new Chart(ctx, {
+export function createChart(
+  querySelection,
+  labelX,
+  labelY,
+  colourX,
+  colourY,
+  data
+) {
+  const xData = formatDataForChart(data, true);
+  const yData = formatDataForChart(data, false);
+
+  new Chart(document.querySelector(querySelection), {
     type: "bar",
     data: {
-      labels: ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"],
+      labels: Object.keys(data),
       datasets: [
         {
-          label: "% of wins",
-          data: [
-            calculatePercentage(
-              dailyRatio.Monday.wins,
-              dailyRatio.Monday.losses
-            ),
-            calculatePercentage(
-              dailyRatio.Tuesday.wins,
-              dailyRatio.Tuesday.losses
-            ),
-            calculatePercentage(
-              dailyRatio.Wednesday.wins,
-              dailyRatio.Wednesday.losses
-            ),
-            calculatePercentage(
-              dailyRatio.Thursday.wins,
-              dailyRatio.Thursday.losses
-            ),
-            calculatePercentage(
-              dailyRatio.Friday.wins,
-              dailyRatio.Friday.losses
-            ),
-            calculatePercentage(
-              dailyRatio.Saturday.wins,
-              dailyRatio.Saturday.losses
-            ),
-            calculatePercentage(
-              dailyRatio.Sunday.wins,
-              dailyRatio.Sunday.losses
-            ),
-          ],
+          label: labelX,
+          data: xData,
           borderWidth: 1,
-          backgroundColor: "#3b82f6",
+          backgroundColor: colourX,
         },
         {
-          label: "% of losses",
-          data: [
-            calculatePercentage(
-              dailyRatio.Monday.losses,
-              dailyRatio.Monday.wins
-            ),
-            calculatePercentage(
-              dailyRatio.Tuesday.losses,
-              dailyRatio.Tuesday.wins
-            ),
-            calculatePercentage(
-              dailyRatio.Wednesday.losses,
-              dailyRatio.Wednesday.wins
-            ),
-            calculatePercentage(
-              dailyRatio.Thursday.losses,
-              dailyRatio.Thursday.wins
-            ),
-            calculatePercentage(
-              dailyRatio.Friday.losses,
-              dailyRatio.Friday.wins
-            ),
-            calculatePercentage(
-              dailyRatio.Saturday.losses,
-              dailyRatio.Saturday.wins
-            ),
-            calculatePercentage(
-              dailyRatio.Sunday.losses,
-              dailyRatio.Sunday.wins
-            ),
-          ],
-
+          label: labelY,
+          data: yData,
           borderWidth: 1,
-          backgroundColor: "#94a3b8",
+          backgroundColor: colourY,
         },
       ],
     },
     options: {
       indexAxis: "y",
-
       scales: {
         x: {
           stacked: true,

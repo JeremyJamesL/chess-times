@@ -66,7 +66,7 @@
               Performance tracker: <span id="username"></span>
             </h2>
             <h3 class="text-slate-400 font-light text-lg leading-normal">
-              Analysing: last 30 games
+              Analysing: <span id="gameCount"></span> games
             </h3>
           </div>
 
@@ -74,25 +74,38 @@
           <div class="stat mb-10">
             <h2 class="mb-2 font-bold text-xl">Performance by day:</h2>
 
-            <canvas id="myChart" class="mb-5"></canvas>
+            <canvas id="dayChart" class="mb-5"></canvas>
             <div
               class="bg-gray-800 p-5 rounded-lg border-l-4 border-green-500 mb-2"
             >
-              You perform best on <strong>Mondays</strong> with a
-              <span class="text-green-500 font-bold">55%</span> win rate
+              You perform best on <strong id="highPerfDay">Mondays</strong> with a
+              <span class="text-green-500 font-bold" id="highPerfDayScore"></span> win rate
             </div>
             <div
               class="bg-gray-800 p-5 rounded-lg border-l-4 border-red-500 mb-2"
             >
-              You perform worst on <strong>Fridays</strong> with a
-              <span class="text-red-500 font-bold">35%</span> win rate
+              You perform worst on <strong id="lowPerfDay">Fridays</strong> with a
+              <span class="text-red-500 font-bold" id="lowPerfDayScore"></span> win rate
             </div>
           </div>
 
           <!-- Stat two-->
-           <div class="stat mb-10">
+          <div class="stat mb-10">
             <h2 class="mb-2 font-bold text-xl">Performance by hour:</h2>
-           </div>
+
+            <canvas id="hourChart" class="mb-5"></canvas>
+            <div
+            class="bg-gray-800 p-5 rounded-lg border-l-4 border-green-500 mb-2"
+          >
+            You perform best on <strong id="highPerfHour">MonHours</strong> with a
+            <span class="text-green-500 font-bold" id="highPerfHourScore"></span> win rate
+          </div>
+          <div
+            class="bg-gray-800 p-5 rounded-lg border-l-4 border-red-500 mb-2"
+          >
+            You perform worst on <strong id="lowPerfHour">FriHours</strong> with a
+            <span class="text-red-500 font-bold" id="lowPerfHourScore"></span> win rate
+          </div>
         
       <div>
       </section>

@@ -1,12 +1,30 @@
-import { processData } from "./utils/getMetrics.js";
+import {
+  getPerfPerDay,
+  getPerfPerHour,
+  getHeadlinePerf,
+} from "./utils/getMetrics.js";
+import { createChart } from "./utils/chart.js";
 const app = document.querySelector("#app");
 const form = document.querySelector("#form");
 const formInput = document.querySelector("#forminput");
 const usernameText = document.querySelector("#username");
+const gameCount = document.querySelector("#gameCount");
 
-const username = "Dippyville";
+// Day perf selectors
+const highPerfDay = document.getElementById("highPerfDay");
+const highPerfDayScore = document.getElementById("highPerfDayScore");
+const lowPerfDay = document.getElementById("lowPerfDay");
+const lowPerfDayScore = document.getElementById("lowPerfDayScore");
+
+// Hour perf selectors
+const highPerfHour = document.getElementById("highPerfHour");
+const highPerfHourScore = document.getElementById("highPerfHourScore");
+const lowPerfHour = document.getElementById("lowPerfHour");
+const lowPerfHourScore = document.getElementById("lowPerfHourScore");
+
+let totalGames = 0;
 let baseURL = `https://api.chess.com/pub/player`;
-let playerName = "";
+let playerName = "dippyville";
 const dayNames = [
   "Sunday",
   "Monday",
@@ -38,9 +56,6 @@ const checkUserExists = async () => {
     "border-red-500",
     "focus-visible:border-red-500"
   );
-  app?.classList.remove("hidden");
-  playerName = formInput.value;
-  usernameText.textContent = playerName;
 };
 
 const getAllGames = async (endpoints) => {
@@ -62,9 +77,10 @@ const getAllGames = async (endpoints) => {
       const day = dayNames[date.getUTCDay()];
       const hourOfDay = date.getHours();
       const win =
-        subGame.black.username === username && subGame.black.result === "win"
+        subGame.black.playerName === playerName &&
+        subGame.black.result === "win"
           ? true
-          : subGame.white.username === username &&
+          : subGame.white.playerName === playerName &&
             subGame.white.result === "win"
           ? true
           : false;
@@ -80,25 +96,68 @@ const getAllGames = async (endpoints) => {
       return gameObj;
     });
   });
-  return allGameData.flat();
+  const flattened = allGameData.flat();
+  totalGames = flattened.length;
+  return flattened;
 };
 
 const getArchives = async () => {
+  console.log(playerName, "in archives");
   const archiveResponse = await fetch(
-    "https://api.chess.com/pub/player/dippyville/games/archives"
+    `https://api.chess.com/pub/player/${playerName}/games/archives`
   );
   const archiveData = await archiveResponse.json();
   return archiveData.archives;
 };
 
 const handleFormSubmit = async (e) => {
-  console.log("logging");
   e.preventDefault();
-  //1. Check if user exists
+
   checkUserExists();
   const gamesArchives = await getArchives();
   const allGames = await getAllGames(gamesArchives);
-  const processedData = processData(allGames);
+
+  const perfPerDay = getPerfPerDay(allGames);
+  const perfPerHour = getPerfPerHour(allGames);
+  console.log(perfPerDay, perfPerHour);
+
+  const [highestPerfDay, lowestPerfDay] = getHeadlinePerf(perfPerDay);
+  const [highestPerfHour, lowestPerfHour] = getHeadlinePerf(perfPerHour);
+
+  createChart(
+    "#dayChart",
+    "% of wins",
+    "% of losses",
+    undefined,
+    undefined,
+    perfPerDay
+  );
+
+  createChart(
+    "#hourChart",
+    "% of wins",
+    "% of losses",
+    undefined,
+    undefined,
+    perfPerHour
+  );
+
+  // Small DOM adjustments
+  usernameText.textContent = playerName;
+  gameCount.textContent = totalGames.toLocaleString("en-GB");
+
+  highPerfDay.textContent = highestPerfDay.name;
+  highPerfDayScore.textContent = highestPerfDay.val + "%";
+  lowPerfDay.textContent = lowestPerfDay.name;
+  lowPerfDayScore.textContent = lowestPerfDay.val + "%";
+
+  highPerfHour.textContent = highestPerfHour.name;
+  highPerfHourScore.textContent = highestPerfHour.val + "%";
+  lowPerfHour.textContent = lowestPerfHour.name;
+  lowPerfHourScore.textContent = lowestPerfHour.val + "%";
+
+  // Only show app when the above has completed and we have data to show
+  app.classList.remove("hidden");
 };
 
 form.addEventListener("submit", handleFormSubmit);
