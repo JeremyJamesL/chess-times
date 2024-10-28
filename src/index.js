@@ -116,6 +116,7 @@ const getArchives = async () => {
 const handleFormSubmit = async (e) => {
   e.preventDefault();
 
+  // Kill charts if they already exits (required by Chart.js)
   if (dayChart) {
     dayChart.destroy();
   }
